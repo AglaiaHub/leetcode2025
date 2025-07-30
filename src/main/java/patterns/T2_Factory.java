@@ -22,6 +22,9 @@ public class T2_Factory {
         LogisticFactory logisticFactory = new LogisticFactory();
         Transport transport = logisticFactory.createTransport(new Car());
         transport.deliver();
+
+        Transport transport2 = new Bike();
+        transport2.deliver();
     }
 
     public static class LogisticFactory {
