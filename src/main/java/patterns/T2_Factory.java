@@ -16,28 +16,23 @@ package patterns;
 
      */
 
-public class T2 {
+public class T2_Factory {
     public static void main(String[] args) {
 
         LogisticFactory logisticFactory = new LogisticFactory();
-        Transport transport = logisticFactory.createTransport(TransportType.CAR);
+        Transport transport = logisticFactory.createTransport(new Car());
         transport.deliver();
     }
 
     public static class LogisticFactory {
-        public Transport createTransport (TransportType type){
+        public Transport createTransport (Transport type){
             Transport transport = null;
 
             switch (type) {
-                case CAR:
-                    transport = new Car();
-                    break;
-                case PLANE:
-                    transport = new Plane();
-                    break;
-                case BIKE:
-                    transport = new Bike();
-                    break;
+                case Car ignored -> transport = new Car();
+                case Bike ignored -> transport = new Bike();
+                case Plane ignored -> transport = new Plane();
+                default -> throw new IllegalStateException("Unexpected value: " + type);
             }
 
             return transport;
@@ -46,12 +41,6 @@ public class T2 {
 
     public abstract static class Transport implements Deliverable {
 
-    }
-
-    public enum TransportType {
-        CAR,
-        PLANE,
-        BIKE
     }
 
     public static interface Deliverable {
