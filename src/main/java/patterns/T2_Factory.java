@@ -20,26 +20,26 @@ public class T2_Factory {
     public static void main(String[] args) {
 
         LogisticFactory logisticFactory = new LogisticFactory();
-        Transport transport = logisticFactory.createTransport(new Car());
+        Transport transport = logisticFactory.createTransport(Type.CAR);
         transport.deliver();
 
-        Transport transport2 = new Bike();
+        Transport transport2 = logisticFactory.createTransport(Type.BIKE);
         transport2.deliver();
     }
 
     public static class LogisticFactory {
-        public Transport createTransport (Transport type){
-            Transport transport = null;
-
-            switch (type) {
-                case Car ignored -> transport = new Car();
-                case Bike ignored -> transport = new Bike();
-                case Plane ignored -> transport = new Plane();
+        public Transport createTransport (Type type){
+            return switch (type) {
+                case CAR -> new Car();
+                case BIKE -> new Bike();
+                case PLANE -> new Plane();
                 default -> throw new IllegalStateException("Unexpected value: " + type);
-            }
-
-            return transport;
+            };
         }
+    }
+
+    private static enum Type {
+        CAR, BIKE, PLANE;
     }
 
     public abstract static class Transport implements Deliverable {
