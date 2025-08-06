@@ -17,11 +17,13 @@ import lombok.*;
 *Задача:* Как спроектировать процесс создания сложного объекта с множеством параметров?
 
  */
-public class T3 {
+public class T3_Builder {
     public static void main(String[] args) {
-        Computer computer = new Computer.ComputerBuilder("A", "B")
+        Computer computer = new Computer.ComputerBuilder()
+                .setProcessor("A")
+                .setMemory("B")
                 .setVideoCard("C")
-                .setSsd("D")
+                .setSsd("E")
                 .build();
         System.out.println(computer.toString());
     }
@@ -36,23 +38,21 @@ public class T3 {
         private String videoCard;
         private String ssd;
 
-        private Computer(String ssd, String videoCard, String memory, String processor) {
-            this.ssd = ssd;
-            this.videoCard = videoCard;
-            this.memory = memory;
-            this.processor = processor;
-        }
-
-        @Setter
+//        @Setter
         public static class ComputerBuilder {
             private String processor;
             private String memory;
             private String videoCard;
             private String ssd;
 
-            public ComputerBuilder(String processor, String memory) {
+            public ComputerBuilder setProcessor(String processor) {
                 this.processor = processor;
+                return this;
+            }
+
+            public ComputerBuilder setMemory(String memory) {
                 this.memory = memory;
+                return this;
             }
 
             public ComputerBuilder setVideoCard(String videoCard) {
@@ -66,7 +66,20 @@ public class T3 {
             }
 
             public Computer build() {
-                return new Computer(processor, memory, videoCard, ssd);
+                if (processor == null || memory == null) {
+                    throw new NullPointerException("processor and memory cannot be null");
+                } else if (videoCard.equals("C") && ssd.equals("D")) {
+                    throw new IllegalArgumentException("this SSDs cannot be together with this processor");
+                } else {
+                    Computer computer = new Computer();
+                    computer.setProcessor(processor);
+                    computer.setMemory(memory);
+                    computer.setVideoCard(videoCard);
+                    computer.setSsd(ssd);
+                    return computer;
+                }
+
+
             }
         }
 
